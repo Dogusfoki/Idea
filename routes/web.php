@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SessionController;
+use App\Http\Controllers\IdeaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create']);
@@ -16,5 +19,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Idea CRUD Routes
+    Route::get('/ideas', [IdeaController::class, 'index'])->name('ideas.index');
+    Route::get('/ideas/create', [IdeaController::class, 'create'])->name('ideas.create');
+    Route::post('/ideas', [IdeaController::class, 'store'])->name('ideas.store');
+    Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('ideas.show');
+    Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('ideas.edit');
+    Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
+    Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('ideas.destroy');
+
+    // Logout
     Route::post('/logout', [SessionController::class, 'destroy']);
 });

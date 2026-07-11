@@ -13,7 +13,8 @@ class IdeaController extends Controller
      */
     public function index()
     {
-        //
+        $ideas = auth()->user()->ideas()->latest()->get();
+        return view('ideas.index', compact('ideas'));
     }
 
     /**
@@ -21,7 +22,7 @@ class IdeaController extends Controller
      */
     public function create()
     {
-        //
+        return view('ideas.create');
     }
 
     /**
@@ -29,7 +30,10 @@ class IdeaController extends Controller
      */
     public function store(StoreIdeaRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $request->user()->ideas()->create($validated);
+
+        return redirect()->route('ideas.index')->with('success', 'Idea created!');
     }
 
     /**
@@ -37,7 +41,7 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        //
+        return view('ideas.show', compact('idea'));
     }
 
     /**
@@ -45,7 +49,7 @@ class IdeaController extends Controller
      */
     public function edit(Idea $idea)
     {
-        //
+        return view('ideas.edit', compact('idea'));
     }
 
     /**
@@ -53,7 +57,10 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
-        //
+        $validated = $request->validated();
+        $idea->update($validated);
+
+        return redirect()->route('ideas.index')->with('success', 'Idea updated!');
     }
 
     /**
@@ -61,6 +68,7 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea)
     {
-        //
+        $idea->delete();
+        return redirect()->route('ideas.index')->with('success', 'idea deleted!');
     }
 }
