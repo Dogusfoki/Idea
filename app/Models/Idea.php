@@ -31,4 +31,17 @@ class Idea extends Model
     {
         return $this->hasMany(Step::class);
     }
+
+    public static function statusCounts($user)
+    {
+        $statuses = IdeaStatus::cases();
+
+        $counts = collect($statuses)->mapWithKeys(function ($status) use ($user) {
+            $count = $user->ideas()->where('status', $status->value)->count();
+            return [$status->value => $count];
+        });
+
+        $counts->put('all', $user->ideas()->count());
+        return $counts;
+    }
 }

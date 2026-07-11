@@ -5,16 +5,29 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
+use Illuminate\Http\Request;
 
 class IdeaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $ideas = auth()->user()->ideas()->latest()->get();
-        return view('ideas.index', compact('ideas'));
+
+        $query = auth()->user()->ideas();
+
+        $status = $request->get('status');
+        $validStatuses = ['pending', 'in_progress', 'completed'];
+
+        if ($status && in_array($status, $validStatuses)) {
+            $query->where('status', $status);
+        }
+
+        $ideas = $query->latest()->get();
+        $statusCounts = Idea::statusCounts(auth()->user());
+
+        return view('ideas.index', compact('ideas', 'statusCounts'));
     }
 
     /**
@@ -57,6 +70,8 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
+
+
         $validated = $request->validated();
         $idea->update($validated);
 
