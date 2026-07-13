@@ -22,8 +22,12 @@
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">My Ideas</h1>
-            <a href="{{ route('ideas.create') }}" class="btn btn-primary">+ New Idea</a>
-        </div>
+            <button
+            type="button"
+            x-data @click="$dispatch('open-modal', {name:'create-idea'})" class="btn btn-primary">
+        + New Idea
+            </button>
+    </div>
 
         @forelse ($ideas as $idea)
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-4">
@@ -59,4 +63,7 @@
             </div>
         @endforelse
     </div>
+<x-modal name="create-idea" title="New idea">
+    <p>Modal içeriği buraya gelecek</p>
+</x-modal>
 </x-layout>

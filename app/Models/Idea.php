@@ -12,6 +12,13 @@ class Idea extends Model
     /** @use HasFactory<\Database\Factories\IdeaFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'status',
+        'user_id'
+        ];
+
     protected $casts = [
         'links' => 'array',
         'status' => IdeaStatus::class,

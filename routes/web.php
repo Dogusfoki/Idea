@@ -14,7 +14,7 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create']);
     Route::post('/register', [RegisteredUserController::class, 'store']);
-    Route::get('/login', [SessionController::class, 'create']);
+    Route::get('/login', [SessionController::class, 'create'])->name('login');
     Route::post('/login', [SessionController::class, 'store']);
 });
 
@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('ideas.edit');
     Route::put('/ideas/{idea}', [IdeaController::class, 'update'])->name('ideas.update');
     Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('ideas.destroy');
+    Route::post('/ideas', [IdeaController::class, 'store'])->name('ideas.store');
 
     // Logout
     Route::post('/logout', [SessionController::class, 'destroy']);
