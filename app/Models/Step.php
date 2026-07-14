@@ -10,6 +10,11 @@ class Step extends Model
     /** @use HasFactory<\Database\Factories\StepFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'description',
+        'completed',
+    ];
+
     public function idea()
     {
         return $this->belongsTo(Idea::class);

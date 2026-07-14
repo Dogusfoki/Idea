@@ -1,7 +1,7 @@
 <form method="POST"
       action="{{ route('ideas.store') }}"
       class="space-y-6"
-      x-data="{ links: [], newLink: '' }">
+        x-data="{ links: [], newLink: '', steps: [], newStep: '' }">
 
     @csrf
 
@@ -18,6 +18,39 @@
              label="Description"
              placeholder="Describe your idea"
              data-test="description-input" />
+
+   <fieldset class="space-y-3">
+    <legend class="text-sm font-medium text-gray-700">Actionable Steps</legend>
+
+    <template x-for="(step, index) in steps" :key="step">
+        <div class="flex gap-2 items-center">
+            <input type="text"
+                   name="steps[]"
+                   x-model="steps[index]"
+                   class="flex-1 border rounded p-2">
+            <button type="button"
+                    @click="steps.splice(index, 1)"
+                    class="text-gray-400 hover:text-red-600"
+                    aria-label="Remove step">✕</button>
+        </div>
+    </template>
+
+    <div class="flex gap-2">
+        <input type="text"
+               id="new-step"
+               x-model="newStep"
+               placeholder="What needs to be done?"
+               class="flex-1 border rounded p-2"
+               autocomplete="off"
+               spellcheck="false">
+        <button type="button"
+                @click="if (newStep.trim()) { steps.push(newStep.trim()); newStep = ''; }"
+                :disabled="!newStep.trim()"
+                :class="newStep.trim() ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-300 cursor-not-allowed'"
+                class="px-4 py-2 rounded text-white transition"
+                aria-label="Add step">+</button>
+    </div>
+</fieldset>
 
     <!-- Links -->
     <fieldset class="space-y-3">

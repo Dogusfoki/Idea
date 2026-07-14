@@ -52,4 +52,5 @@ class Idea extends Model
         $counts->put('all', $user->ideas()->count());
         return $counts;
     }
+
 }

@@ -57,17 +57,38 @@
         @endif
 
         <!-- Steps -->
+
+
         @if($idea->steps && count($idea->steps) > 0)
             <div class="mt-8">
                 <h3 class="text-lg font-semibold mb-3">Steps</h3>
                 <div class="space-y-2">
                     @foreach($idea->steps as $step)
+                   <form action="{{ route('steps.update', $step) }}"
+                         method="POST"
+                         class="flex items-center gap-3">
+                         @csrf
+                         @method('PATCH')
+
+                        <button type="submit"
+                                role="checkbox"
+                                aria-checked="{{ $step->completed ? 'true' : 'false' }}"
+                                class="size-6 flex items-center justify-center rounded border border-primary {{ $step->completed ? 'bg-green-500' : '' }}">
+                            @if ($step->completed)
+                                ✓
+                            @endif
+                        </button>
+
+                        <span class="{{ $step->completed ? 'line-through text-gray-400' : '' }}">
+                            {{ $step->description }}
+                        </span>
+                    </form>
                         <div class="flex items-center gap-3">
-                            <input type="checkbox" {{ $step->completed ? 'checked' : '' }}
-                                   class="checkbox checkbox-sm" disabled>
-                            <span class="{{ $step->completed ? 'line-through text-gray-400' : '' }}">
+                            {{-- <input type="checkbox" {{ $step->completed ? 'checked' : '' }}
+                                   class="checkbox checkbox-sm" disabled> --}}
+                            {{-- <span class="{{ $step->completed ? 'line-through text-gray-400' : '' }}">
                                 {{ $step->description }}
-                            </span>
+                            </span> --}}
                         </div>
                     @endforeach
                 </div>
