@@ -25,6 +25,9 @@ class StoreIdeaRequest extends FormRequest
         return [
             'title' => 'required|string|min:3|max:255',
             'description' => 'required|string|min:10',
+            'status' => ['required', 'in:pending,in_progress,completed'],
+            'links' => 'nullable|array',
+            'links.*' => 'nullable|url|max:255',
         ];
     }
 }

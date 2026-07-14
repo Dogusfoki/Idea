@@ -1,14 +1,13 @@
 <x-layout>
-{{-- Filtre Butonları --}}
 <div class="flex flex-wrap gap-2 mb-6">
-    {{-- All Butonu --}}
+    {{-- All Button --}}
     <a href="{{ route('ideas.index', ['status' => 'all']) }}"
        class="btn btn-sm {{ request('status') === 'all' || !request('status') ? 'btn-primary' : 'btn-ghost' }}">
         All
         <span class="badge badge-sm">{{ $statusCounts['all'] ?? 0 }}</span>
     </a>
 
-    {{-- Her Status İçin Buton --}}
+    {{-- Button for every status --}}
     @foreach(\App\Enums\IdeaStatus::cases() as $status)
         <a href="{{ route('ideas.index', ['status' => $status->value]) }}"
            class="btn btn-sm {{ request('status') === $status->value ? 'btn-primary' : 'btn-ghost' }}">

@@ -1,6 +1,6 @@
 <x-layout>
     <div class="max-w-4xl mx-auto px-4 py-8">
-        <!-- Geri Dön ve Aksiyonlar -->
+
         <div class="flex items-center justify-between mb-6">
             <a href="{{ route('ideas.index') }}" class="flex items-center gap-2 text-sm font-medium hover:underline">
                 <x-icons.arrow-back class="w-4 h-4" />
@@ -23,11 +23,9 @@
                 </form>
             </div>
         </div>
-
-        <!-- Başlık -->
+            {{-- data --}}
         <h1 class="text-3xl font-bold mb-2">{{ $idea->title }}</h1>
 
-        <!-- Status ve Tarih -->
         <div class="flex items-center gap-4 mb-6">
             <x-status-label :status="$idea->status" />
             <span class="text-sm text-gray-500">
@@ -35,7 +33,6 @@
             </span>
         </div>
 
-        <!-- Açıklama -->
         <div class="card bg-base-100 shadow-sm mb-6">
             <div class="card-body">
                 <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -44,7 +41,6 @@
             </div>
         </div>
 
-        <!-- Linkler -->
         @if($idea->links && count($idea->links) > 0)
             <div class="mt-8">
                 <h3 class="text-lg font-semibold mb-3">Resources & Links</h3>
@@ -60,7 +56,7 @@
             </div>
         @endif
 
-        <!-- Steps (ileride eklenecek) -->
+        <!-- Steps -->
         @if($idea->steps && count($idea->steps) > 0)
             <div class="mt-8">
                 <h3 class="text-lg font-semibold mb-3">Steps</h3>

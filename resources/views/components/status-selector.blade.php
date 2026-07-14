@@ -7,7 +7,7 @@
         <button
         type="button"
         @click="selectedStatus = '{{ $status }}'"
-        data-test="button-status-{{ $status }}"  <!-- ✅ EKLENDİ -->
+        data-test="button-status-{{ $status }}"
         :class="selectedStatus === '{{ $status }}'
         ? 'bg-blue-600 text-white'
         : 'bg-gray-200 text-gray-700'"
