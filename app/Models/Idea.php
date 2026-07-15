@@ -17,7 +17,8 @@ class Idea extends Model
         'description',
         'status',
         'links',
-        'user_id'
+        'user_id',
+        'image_path',
         ];
 
     protected $casts = [

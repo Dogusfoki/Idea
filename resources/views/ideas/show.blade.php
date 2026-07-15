@@ -24,6 +24,14 @@
             </div>
         </div>
             {{-- data --}}
+
+                        @if($idea->image_path)
+                <div class="rounded-lg overflow-hidden mb-4">
+                    <img src="{{ asset('storage/' . $idea->image_path) }}"
+                        alt="{{ $idea->title }}"
+                        class="w-full h-auto object-cover">
+                </div>
+            @endif
         <h1 class="text-3xl font-bold mb-2">{{ $idea->title }}</h1>
 
         <div class="flex items-center gap-4 mb-6">

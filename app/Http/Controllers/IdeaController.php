@@ -49,6 +49,9 @@ class IdeaController extends Controller
            'status' => $request->status ?? 'pending',
            'links' => $request->links ?? [],
            'user_id' => auth()->id(),
+           'image_path' => $request->image
+              ? $request->image->store('ideas', 'public')
+              : null,
         ]);
 
         if ($request->steps) {
@@ -56,7 +59,6 @@ class IdeaController extends Controller
                 collect($request->steps)->map(fn ($step) => ['description' => $step])
             );
         }
-
         return redirect()->route('ideas.index')->with('success', 'Idea created!');
     }
 

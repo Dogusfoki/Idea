@@ -10,12 +10,8 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('steps', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('idea_id')->constrained()->cascadeOnDelete();
-            $table->string('description');
-            $table->boolean('completed')->default(false);
-            $table->timestamps();
+        Schema::table('ideas', function (Blueprint $table) {
+            $table->string('image_path')->nullable();
         });
     }
 
@@ -24,6 +20,8 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('steps');
+        Schema::table('ideas', function (Blueprint $table) {
+            $table->dropColumn('image_path');
+        });
     }
 };

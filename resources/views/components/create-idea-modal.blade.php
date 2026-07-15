@@ -1,8 +1,9 @@
 <form method="POST"
       action="{{ route('ideas.store') }}"
       class="space-y-6"
-        x-data="{ links: [], newLink: '', steps: [], newStep: '' }">
-
+      x-data="{ links: [], newLink: '', steps: [], newStep: '' }"
+      enctype="multipart/form-data"
+      >
     @csrf
 
     <!-- Title -->
@@ -18,6 +19,11 @@
              label="Description"
              placeholder="Describe your idea"
              data-test="description-input" />
+
+    <input type="file" name="image">
+
+
+
 
    <fieldset class="space-y-3">
     <legend class="text-sm font-medium text-gray-700">Actionable Steps</legend>

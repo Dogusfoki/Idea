@@ -28,6 +28,7 @@ class StoreIdeaRequest extends FormRequest
             'status' => ['required', 'in:pending,in_progress,completed'],
             'links' => 'nullable|array',
             'links.*' => 'nullable|url|max:255',
+            'image' => 'nullable|image|max:5120'
         ];
     }
 }

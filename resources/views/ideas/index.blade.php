@@ -14,8 +14,9 @@
             {{ $status->label() }}
             <span class="badge badge-sm">{{ $statusCounts[$status->value] ?? 0 }}</span>
         </a>
-    @endforeach
-</div>
+        @endforeach
+    </div>
+
 
 
     <div class="max-w-7xl mx-auto">
@@ -24,18 +25,25 @@
             <button
             type="button"
             x-data @click="$dispatch('open-modal', {name:'create-idea'})" class="btn btn-primary">
-        + New Idea
-            </button>
+            + New Idea
+        </button>
     </div>
 
-        @forelse ($ideas as $idea)
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-4">
-                <div class="flex justify-between items-start">
-                    <a href="{{ route('ideas.show', $idea) }}" class="block flex-1">
-                        <h2 class="text-xl font-semibold hover:text-blue-600">{{ $idea->title }}</h2>
+    @forelse ($ideas as $idea)
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-4">
+        <div class="flex justify-between items-start">
+            <a href="{{ route('ideas.show', $idea) }}" class="block flex-1">
+                        @if($idea->image_path)
+                        <div class="-mx-4 -mt-4 rounded-t-lg overflow-hidden mb-4">
+                            <img src="{{ asset('storage/' . $idea->image_path) }}"
+                                alt="{{ $idea->title }}"
+                                class="w-full h-60 object-cover">
+                        </div>
+                        @endif
+                        <h2 class="text-xl mb-4 font-semibold hover:text-blue-600">{{ $idea->title }}</h2>
                     </a>
-                <x-status-label :status="$idea->status" />
                 </div>
+                <x-status-label :status="$idea->status" />
                 <p class="text-gray-600 dark:text-gray-300 mt-2">
                     {{ Str::limit($idea->description, 150) }}
                 </p>
