@@ -23,8 +23,14 @@ class UpdateIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:3|max:255',
-            'description' => 'required|string|min:10',
-        ];
+             'title' => 'required|string|min:3|max:255',
+             'description' => 'required|string|min:10',
+             'status' => ['required', 'in:pending,in_progress,completed'],
+             'links' => 'nullable|array',
+             'links.*' => 'nullable|url|max:255',
+             'steps' => 'nullable|array',
+             'steps.*' => 'nullable|string|max:255',
+             'image' => 'nullable|image|max:5120'
+         ];
     }
 }

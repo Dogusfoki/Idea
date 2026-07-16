@@ -71,6 +71,6 @@
         @endforelse
     </div>
 <x-modal name="create-idea" title="New idea">
-    <p>Modal içeriği buraya gelecek</p>
+            <x-create-idea-modal />
 </x-modal>
 </x-layout>

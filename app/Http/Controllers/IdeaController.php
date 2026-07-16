@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class IdeaController extends Controller
 {
@@ -73,13 +74,32 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
-
         Gate::authorize('update', $idea);
 
-        $validated = $request->validated();
-        $idea->update($validated);
+        $data = $request->safe()->only(['title', 'description', 'status', 'links']);
 
-        return redirect()->route('ideas.index')->with('success', 'Idea updated!');
+        if ($request->image) {
+            // Eski resmi sil (varsa)
+            if ($idea->image_path) {
+                Storage::disk('public')->delete($idea->image_path);
+            }
+            $data['image_path'] = $request->image->store('ideas', 'public');
+        } elseif ($request->boolean('remove_image')) {
+            if ($idea->image_path) {
+                Storage::disk('public')->delete($idea->image_path);
+            }
+            $data['image_path'] = null;
+        }
+
+        $idea->update($data);
+
+        // Steps'i sil, formdan gelenlerle yeniden oluştur
+        $idea->steps()->delete();
+        $idea->steps()->createMany(
+            collect($request->steps ?? [])->map(fn ($step) => ['description' => $step])
+        );
+
+        return redirect()->route('ideas.show', $idea)->with('success', 'Idea updated!');
     }
 
     /**

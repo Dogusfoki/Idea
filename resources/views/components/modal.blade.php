@@ -19,7 +19,8 @@
             <button @click="show = false" class="btn btn-sm btn-circle btn-ghost">✕</button>
         </div>
         <div>
-            <x-create-idea-modal />
+
+            {{ $slot }}
         </div>
     </div>
 </div>

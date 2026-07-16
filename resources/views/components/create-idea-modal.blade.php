@@ -1,16 +1,27 @@
+@props(['idea' => null])
+
 <form method="POST"
-      action="{{ route('ideas.store') }}"
+      action="{{ $idea ? route('ideas.update', $idea) : route('ideas.store') }}"
       class="space-y-6"
-      x-data="{ links: [], newLink: '', steps: [], newStep: '' }"
+      x-data="{
+      links: {{ Js::from($idea->links ?? []) }},
+      newLink: '',
+      steps: {{ Js::from($idea?->steps->pluck('description') ?? []) }},
+      newStep: ''
+       }"
       enctype="multipart/form-data"
       >
     @csrf
+    @if ($idea)
+        @method('PUT')
+    @endif
 
     <!-- Title -->
     <x-field type="text"
              name="title"
              label="Title"
              placeholder="Enter an idea"
+             :value="$idea->title ?? ''"
              data-test="title-input" />
 
     <!-- Description -->
@@ -18,17 +29,45 @@
              name="description"
              label="Description"
              placeholder="Describe your idea"
+             :value="$idea->description ?? ''"
              data-test="description-input" />
 
-    <input type="file" name="image">
+   <div x-data="{
+        newImagePreview: null,
+        removeImage: false
+     }">
+    @if($idea?->image_path)
+        <div x-show="!newImagePreview && !removeImage">
+            <img src="{{ asset('storage/' . $idea->image_path) }}"
+                 class="w-200 h-50 object-cover rounded mb-2">
+            <button type="button" @click="removeImage = true" class="border rounded-lg px-2 text-red-600 text-sm hover:underline">
+                Remove Image
+            </button>
+        </div>
+    @endif
 
+    <div x-show="newImagePreview">
+        <img :src="newImagePreview" class="w-200 h-50 object-cover rounded mb-2">
+        <button type="button" @click="newImagePreview = null; $refs.imageInput.value = ''" class="text-red-600 text-sm hover:underline">
+            Cancel New Image
+        </button>
+    </div>
 
+    <div x-show="!newImagePreview && (removeImage || !{{ $idea?->image_path ? 'true' : 'false' }})">
+        <input type="file"
+               name="image"
+               x-ref="imageInput"
+               @change="newImagePreview = $event.target.files.length ? URL.createObjectURL($event.target.files[0]) : null">
+    </div>
+
+    <input type="hidden" name="remove_image" :value="removeImage ? 1 : 0">
+</div>
 
 
    <fieldset class="space-y-3">
     <legend class="text-sm font-medium text-gray-700">Actionable Steps</legend>
 
-    <template x-for="(step, index) in steps" :key="step">
+    <template x-for="(step, index) in steps" :key="index">
         <div class="flex gap-2 items-center">
             <input type="text"
                    name="steps[]"
@@ -63,7 +102,7 @@
         <legend class="text-sm font-medium text-gray-700">Links</legend>
 
         <!-- Mevcut linkler -->
-        <template x-for="(link, index) in links" :key="link">
+        <template x-for="(link, index) in links" :key="index">
             <div class="flex gap-2 items-center">
                 <input type="text"
                        name="links[]"
@@ -93,15 +132,15 @@
     </fieldset>
 
     <!-- Status -->
-    <x-status-selector default="pending" />
+    <x-status-selector :default="$idea->status->value ?? 'pending' " />
 
     <!-- Submit -->
     <div class="flex justify-center">
         <button type="submit"
                 data-test="submit-button"
-                @click="dispatch('close-modal')"
+                @click="$dispatch('close-modal')"
                 class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            Create Idea
+            {{ $idea ? 'Update Idea' : 'Create Idea' }}
         </button>
     </div>
 </form>

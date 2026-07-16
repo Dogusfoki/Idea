@@ -8,10 +8,15 @@
             </a>
 
             <div class="flex items-center gap-3">
-                <a href="{{ route('ideas.edit', $idea) }}" class="btn btn-outline btn-sm">
-                    <x-icons.external class="w-4 h-4" />
+                <button type="button"
+                x-data
+                data-test="edit-idea-button"
+                @click="$dispatch('open-modal', {name: 'edit-idea'})"
+                {{ route('ideas.edit', $idea) }}
+                class="btn btn-outline btn-sm">
+                  <x-icons.external class="w-4 h-4" />
                     Edit Idea
-                </a>
+                </button>
 
                 <form action="{{ route('ideas.destroy', $idea) }}" method="POST" class="inline">
                     @csrf
@@ -103,4 +108,7 @@
             </div>
         @endif
     </div>
+    <x-modal name="edit-idea" title="Edit Idea">
+    <x-create-idea-modal :idea="$idea" />
+    </x-modal>
 </x-layout>

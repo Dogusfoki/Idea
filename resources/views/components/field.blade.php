@@ -1,4 +1,4 @@
-@props(['label', 'name', 'type' => 'text', 'required' => false, 'placeholder' => ''])
+@props(['label', 'name', 'type' => 'text', 'required' => false, 'placeholder' => '', 'value' => null])
 
 <div>
     <label for="{{ $name }}" class="block text-sm font-medium text-gray-700 mb-1">
@@ -12,13 +12,13 @@
             placeholder="{{ $placeholder }}"
             {{ $attributes->merge(['class' => 'w-full border rounded p-2']) }}
             @if($required) required @endif
-        >{{ old($name) }}</textarea>
+        >{{ old($name, $value) }}</textarea>
     @else
         <input
             type="{{ $type }}"
             name="{{ $name }}"
             id="{{ $name }}"
-            value="{{ old($name) }}"
+            value="{{ old($name, $value) }}"
             placeholder="{{ $placeholder }}"
             {{ $attributes->merge(['class' => 'w-full border rounded p-2']) }}
             @if($required) required @endif
