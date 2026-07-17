@@ -11,7 +11,8 @@
                         Logout
                     </button>
                 </form>
-            @else
+                <a class="text-gray-600 hover:text-gray-800" href="{{ route('profile.edit') }}">Edit Profile</a>
+                @else
                 <a href="/login" class="text-gray-600 hover:text-gray-800">Sign In</a>
                 <a href="/register" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                     Register

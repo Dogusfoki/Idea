@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('ideas.destroy');
     Route::post('/ideas', [IdeaController::class, 'store'])->name('ideas.store');
     Route::patch('/steps/{step}', [StepController::class, 'update'])->name('steps.update');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     // Logout
     Route::post('/logout', [SessionController::class, 'destroy']);
